@@ -19,7 +19,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // _planoEstudoService.delete();
+    _updateList();
+  }
+
+  void _updateList() {
     _planoEstudoService.list().then((planos) {
       setState(() {
         this._planos = planos;
@@ -37,13 +40,14 @@ class _HomePageState extends State<HomePage> {
         children: _buildPlanosEstudos(),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => PlanoEstudoPage(),
             ),
           );
+          _updateList();
         },
         tooltip: 'Adicionar',
         child: Icon(Icons.add),

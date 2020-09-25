@@ -20,12 +20,6 @@ class PlanoEstudoService extends Service<PlanoEstudoModel> {
     await prefs.setString('planos', json.encode(planos.map((p) => p.toJson()).toList()));
   }
 
-  delete() async {
-    var prefs = await SharedPreferences.getInstance();
-
-    await prefs.setString('planos', json.encode([]));
-  }
-
   @override
   Future update(int index, PlanoEstudoModel model) async {
     List<PlanoEstudoModel> planos = await list();
