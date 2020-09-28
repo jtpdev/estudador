@@ -1,6 +1,8 @@
 import 'package:estudador/models/planoestudo.dart';
 import 'package:estudador/services/planoestudo.dart';
+import 'package:estudador/utils/string.dart';
 import 'package:estudador/widgets/planoestudo.dart';
+import 'package:estudador/widgets/timer.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -59,8 +61,14 @@ class _HomePageState extends State<HomePage> {
     return _planos.map(
       (p) {
         return GestureDetector(
-          onTap: () {
-            // TODO abrir tela para cronometrar estudo
+          onTap: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TimerPage(_planos.indexOf(p), p),
+              ),
+            );
+            _updateList();
           },
           child: Card(
             child: Container(
@@ -77,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Expanded(
                     child: Text(
-                      '${_printDuration(p.tempoestudado)} estudado',
+                      '${StringUtils.printDuration(p.tempoestudado)} estudado',
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -98,14 +106,5 @@ class _HomePageState extends State<HomePage> {
         );
       },
     ).toList();
-  }
-
-  String _printDuration(seconds) {
-    if (seconds == null) seconds = 0;
-    var duration = Duration(milliseconds: seconds * 1000);
-    String twoDigits(int n) => n.toString().padLeft(2, "0");
-    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
-    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
   }
 }
