@@ -26,9 +26,10 @@ class _HomePageState extends State<HomePage> {
 
   void _updateList() {
     _planoEstudoService.list().then((planos) {
-      setState(() {
-        this._planos = planos;
-      });
+      if (planos != null)
+        setState(() {
+          this._planos = planos;
+        });
     });
   }
 
